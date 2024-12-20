@@ -5,5 +5,5 @@ export default function PageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <LiveBlocksProvider>PageLayout</LiveBlocksProvider>;
+  return <LiveBlocksProvider>{children}</LiveBlocksProvider>;
 }

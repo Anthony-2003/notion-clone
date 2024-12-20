@@ -6,6 +6,12 @@ import { Button } from "./ui/button";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import useOwner from "@/lib/useOwner";
+import Editor from "./Editor";
+import DeleteDocument from "./DeleteDocument";
+import InviteUser from "./InviteUser";
+import ManageUsers from "./ManageUsers";
+import Avatars from "./Avatars";
 
 export default function Document({ id }: { id: string }) {
   const [data, loading, error] = useDocumentData(doc(db, "documents", id));
@@ -32,19 +38,30 @@ export default function Document({ id }: { id: string }) {
   }
 
   return (
-    <div>
+    <div className="flex-1 h-full bg-white p-5">
       <div className="flex max-w-6xl mx-auto justify-between pb-5">
         <form onSubmit={updateTitle} className="flex flex-1 space-x-2">
           <Input value={input} onChange={(e) => setInput(e.target.value)} />
           <Button disabled={isUpdating} type="submit">
             {isUpdating ? "Updating..." : "Update"}
           </Button>
+
+          {isOwner && (
+            <>
+              <InviteUser />
+              <DeleteDocument />
+            </>
+          )}
         </form>
       </div>
 
-      <div>
-
+      <div className="flex max-w-6xl mx-auto justify-between items-center mb-5">
+        <ManageUsers />
+        <Avatars />
       </div>
+
+      <hr className="pb-10" />
+      <Editor />
     </div>
   );
 }
